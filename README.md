@@ -9,6 +9,15 @@
 | ---------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | C++        | [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) | [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)       | [`.clang-format`](https://github.com/iotaaxel/Boerberl/blob/main/.clang-format) |
 
+* From [Google's C++ Style Guide - FileNames](https://google.github.io/styleguide/cppguide.html#File_Names): 
+```
+C++ files should end in .cc and header files should end in .h. Files that rely on being textually included at specific points should end in .inc (see also the section on self-contained headers).
+
+Do not use filenames that already exist in /usr/include, such as db.h.
+
+In general, make your filenames very specific. For example, use http_server_logs.h rather than logs.h. A very common case is to have a pair of files called, e.g., foo_bar.h and foo_bar.cc, defining a class called FooBar.
+```
+
 ## Objective
 Create a C++ function to process and efficiently store market data.
 

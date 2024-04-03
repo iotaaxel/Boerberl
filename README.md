@@ -57,6 +57,17 @@ data snapshot by symbol.
 ## Testing / Examples
 * Sample data observed on [Yahoo Finance's Most Bought by Hedge Funds](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-bought-by-hedge-funds/) is used to create a text file representing the input format.
 
+## References
+* [Quickstart: Building with CMake](https://google.github.io/googletest/quickstart-cmake.html)
+* [Google Googletest Repository](https://github.com/google/googletest/tree/main)
+  * [Examples](googletest/samples) of using `.h` and `.cc` files with GoogleTest tests built with CMake
+* [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)
+* [Clang-Format](https://clang.llvm.org/docs/ClangFormat.html)
+* [CMake Resources](https://cmake.org/resources)
+* [CMake Latest Releases](https://cmake.org/download/)
+* [Homebrew for CMake](https://formulae.brew.sh/formula/cmake)
+* [Clang-Format Style Options](https://clang.llvm.org/docs/ClangFormatStyleOptions.html)
+
 ## License
 
 Licensed under the MIT License, Copyright © 2019-2024

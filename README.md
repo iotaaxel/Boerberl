@@ -54,6 +54,9 @@ data snapshot by symbol.
 * Include all necessary files and dependencies for building and running your solution.
 * Submit your solution as a compressed folder containing all necessary files.
 
+## Testing / Examples
+* Sample data observed on [Yahoo Finance's Most Bought by Hedge Funds](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-bought-by-hedge-funds/) is used to create a text file representing the input format.
+
 ## License
 
 Licensed under the MIT License, Copyright © 2019-2024

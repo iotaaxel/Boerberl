@@ -48,6 +48,23 @@ The function will receive a stream of strings with the following format:
 6. Run Tests:
   ```ctest```
 
+## Sample Usage: 
+### Build and Run tests
+![Build and Run tests screenshot](img/build_and_run.png)
+
+### Read from input file
+![input file output screenshot](img/read_file_snippet.png)
+
+### Read from user input
+**Important:** 
+* The code reads lines from the standard input until the end of the file (EOF) is reached. 
+
+* Usually, the user needs to use `Ctrl+D` on Unix-like systems or `Ctrl+Z` followed by Enter on Windows systems.
+
+* In the following example, the user used a Macbook. After the first line, they pressed Enter to write on additional lines and finally used `Ctrl+D`.
+
+![user input screenshot](img/read_user_input.png)
+
 ## Sample Data:
 * Sample data observed on [Yahoo Finance's Most Bought by Hedge Funds](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-bought-by-hedge-funds/) is used to create a text file representing the input format.
 

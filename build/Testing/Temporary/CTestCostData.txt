@@ -1,13 +1,4 @@
-MyTest 0 0
-Name 0 0
-ReadUserInputTest 0 0
-ReadInputDataFromFileTest 0 0
-ProcessLineTest 0 0
-printMarketDataTest 0 0
-HelloTest 0 0
-cpp_test 0 0
-on_market_data_test 10 0.0149106
-OnMarketDataTest.HelloTest 11 0.000945928
-OnMarketDataTest.HelloSTest 11 0.000186939
-OnMarketDataTest.ReadUserInputTest 4 0.000506209
+OnMarketDataTest.HelloTest 1 0.00260046
+OnMarketDataTest.HelloSTest 1 0.00243704
+OnMarketDataTest.ReadUserInputTest 1 0.00237063
 ---

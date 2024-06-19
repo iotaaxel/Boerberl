@@ -1,0 +1,11 @@
+Checks: '*',
+    'modernize-use-nullptr'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+DisableChecks: 'cppcoreguidelines-pro-type-member-init, readability-avoid-const-params-in-decls'
+AnalyzeTemporaryDtors: false
+FormatStyle: none
+User: ''
+CheckOptions:
+    - key: some-check-name.OptionName
+        value: true

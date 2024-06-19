@@ -19,7 +19,7 @@ In general, make your filenames very specific. For example, use http_server_logs
 ```
 
 ## Objective
-Create a C++ function to process and efficiently store market data.
+Create a C++ function to process and efficiently store market data. The user should be able to retrieve the latest top-of-book market data snapshot by symbol.
 
 ## Function Signature
 ```cpp 
@@ -31,31 +31,32 @@ The function will receive a stream of strings with the following format:
 ```cpp 
 <SYMBOL> <BID_PRICE> <ASK_PRICE> <BID_SIZE> <ASK_SIZE>\n
 ```
-* Each item in the string is separated by a space.
-* Each string is delimited by a newline (`\n`).
+  * Each item in the string is separated by a space.
+  * Each string is delimited by a newline (`\n`).
 
-This represents the top-of-book snapshots of the current state of market data for a symbol.
+## Build and Run:
+1. Create a `build` directory: 
+  ```mkdir build && cd build```
+2. Configure CMake: 
+  ```cmake ..```
+3. Build:
+  ```cmake --build .```
+4. Run Clang-Tidy (optional): 
+  ```cmake --build . --target clang-tidy```
+5. Run Clang-Format (optional): 
+  ```clang-format -i src/* test/*```
+6. Run Tests:
+  ```ctest```
 
-## Requirements
-1. Your code should parse the given data.
-2. Implement a data structure that allows the user to retrieve the latest top-of-book market
-data snapshot by symbol.
-3. Aim for efficiency in both space and time complexity.
-4. You can use the Standard Template Library (STL) for your solution.
-
-## Optional (but recommended)
-* Include unit tests to verify the correctness of your implementation.
-* Provide sample usage of your function.
-* If necessary, include Makefiles or any build instructions.
-* Include any additional documentation or comments to support or clarify the code.
-
-## Submission Guidelines
-* Ensure your code is well-commented and adheres to coding best practices.
-* Include all necessary files and dependencies for building and running your solution.
-* Submit your solution as a compressed folder containing all necessary files.
-
-## Testing / Examples
+## Sample Data:
 * Sample data observed on [Yahoo Finance's Most Bought by Hedge Funds](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-bought-by-hedge-funds/) is used to create a text file representing the input format.
+
+## Future Improvements:
+  1. Keep the state while continously processing new user market data input.
+  2. Add the ability to filter on multiple symbols simultaneously. 
+  3. Add the ability to also filter on bid price, ask price, bid size, and ask size either individually or simultaneously. 
+  4. Increase test coverage. 
+  5. Add logging. 
 
 ## References
 * [Quickstart: Building with CMake](https://google.github.io/googletest/quickstart-cmake.html)

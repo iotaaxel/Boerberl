@@ -41,9 +41,9 @@ The function will receive a stream of strings with the following format:
   ```cmake ..```
 3. Build:
   ```cmake --build .```
-4. Run Clang-Tidy (optional): 
+4. Run Clang-Tidy (optional, *TODO: troubleshoot*): 
   ```cmake --build . --target clang-tidy```
-5. Run Clang-Format (optional): 
+5. Run Clang-Format (optional, *TODO: troubleshoot*): 
   ```clang-format -i src/* test/*```
 6. Run Tests:
   ```ctest```
@@ -51,12 +51,19 @@ The function will receive a stream of strings with the following format:
 ## Sample Data:
 * Sample data observed on [Yahoo Finance's Most Bought by Hedge Funds](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-bought-by-hedge-funds/) is used to create a text file representing the input format.
 
+## Terminology: 
+* Level 1 or top-of-book market data provides the highest bid and the lowest ask across multiple exchanges (or a single exchange).
+
 ## Future Improvements:
   1. Keep the state while continously processing new user market data input.
   2. Add the ability to filter on multiple symbols simultaneously. 
   3. Add the ability to also filter on bid price, ask price, bid size, and ask size either individually or simultaneously. 
   4. Increase test coverage. 
-  5. Add logging. 
+  5. Add logging. For example, if the ask price was lower than the bid price note that we observed a “crossed market”.
+  6. Use [std::multimap](http://en.cppreference.com/w/cpp/container/multimap) if we eventually incorporate level 2 market data.
+  7. Consider displaying the spread as a percent.
+  8. Consider adding the volume data.
+  9. Consider adding the last trade price.
 
 ## References
 * [Quickstart: Building with CMake](https://google.github.io/googletest/quickstart-cmake.html)

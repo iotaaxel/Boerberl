@@ -1,0 +1,5 @@
+if(EXISTS "/Users/axel/Development/Boerberl/build/test/on_market_data_test[1]_tests.cmake")
+  include("/Users/axel/Development/Boerberl/build/test/on_market_data_test[1]_tests.cmake")
+else()
+  add_test(on_market_data_test_NOT_BUILT on_market_data_test_NOT_BUILT)
+endif()

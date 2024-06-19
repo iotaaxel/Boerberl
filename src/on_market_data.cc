@@ -6,140 +6,108 @@
 #include <map>
 #include <algorithm>
 
-// Helper function for case-insensitive string matching
-inline bool isCaseInsensitiveMatch(const std::string& str1, const std::string& str2) {
-	return std::equal(str1.begin(), str1.end(), str2.begin(), str2.end(),
-		[](char c1, char c2) {
-			return std::toupper(c1) == std::toupper(c2);
-		});
-}
-
-// Helper function to process input data
-void processInputData(const std::string& symbol, const std::string& inputData) {
-	std::string modifiedInputData = inputData;
-	modifiedInputData.insert(0, symbol + " 0.0 0.0 0 0\n");
-
-	MarketData marketData;
-	marketData.on_market_data(modifiedInputData.c_str());
-}
-
-// Helper function to read input data from a file
-std::string readInputDataFromFile(const std::string& filePath) {
-	std::ifstream inputFile(filePath);
-	if (!inputFile) {
-		std::cerr << "Failed to open file\n";
-		return "";
+// Helper functions
+namespace helpers {
+	// Helper function to print market data
+	void printMarketData(const std::map<std::string, MarketData>& marketDataMap, std::ostream& os) {
+		for (const auto& pair : marketDataMap) {
+			const MarketData& data = pair.second;
+			os << "Symbol: " << data.getSymbol() << "\n";
+			os << "Bid Price: " << data.getBidPrice() << "\n";
+			os << "Ask Price: " << data.getAskPrice() << "\n";
+			os << "Bid Size: " << data.getBidSize() << "\n";
+			os << "Ask Size: " << data.getAskSize() << "\n";
+			os << "\n";
+		}
 	}
-	std::stringstream buffer;
-	buffer << inputFile.rdbuf();
-	return buffer.str();
-}
 
-// Helper function to print market data
-void printMarketData(const std::map<std::string, MarketData>& marketDataMap) {
-	for (const auto& pair : marketDataMap) {
-		const MarketData& data = pair.second;
-		std::cout << "Symbol: " << data.Symbol() << "\n";
-		std::cout << "Bid Price: " << data.getBidPrice() << "\n";
-		std::cout << "Ask Price: " << data.getAskPrice() << "\n";
-		std::cout << "Bid Size: " << data.getBidSize() << "\n";
-		std::cout << "Ask Size: " << data.getAskSize() << "\n";
-		std::cout << "\n";
+	// Helper function to process input data
+	void processInputData(const std::string& inputData) {
+		MarketData marketData;
+		marketData.on_market_data(inputData.c_str());
 	}
-}
 
-
-void MarketData::on_market_data(char const *data){
-	
-	// Process the five items with the following format
-	// <SYMBOL> <BID_PRICE> <ASK_PRICE> <BID_SIZE> <ASK_SIZE>
-	// The first line is "<SYMBOL> 0.0 0.0 0 0"
-
-	// Now you can retrieve the latest top-of-book market data snapshot by symbol
-	// Example:
-	// MarketData latestData = marketDataMap["AAPL"];
-	// double latestBidPrice = latestData.getBidPrice();
-	// double latestAskPrice = latestData.getAskPrice();
-	// int latestBidSize = latestData.getBidSize();
-	// int latestAskSize = latestData.getAskSize();
-
-
-	std::string filter_symbol;
-	std::istringstream iss(data); // Declare and initialize the 'iss' variable
-	std::string line;
-
-	// Create a map to store the market data
-	std::map<std::string, MarketData> marketDataMap;
-	
-	// Create a vector to store the items
-	std::vector<std::string> items;
-
-	// Extract the symbol from the first line
-	std::getline(iss, line, '\n');
-	std::istringstream lineStream(line);
-	lineStream >> filter_symbol;
-	
-	// Process the remaining lines
-	while (std::getline(iss, line, '\n')) {
+	// Helper function to process each line of input data
+	void processLine(const std::string& line, std::map<std::string, MarketData>& marketDataMap) {
 		std::istringstream lineStream(line);
 		std::string item;
-
+		std::vector<std::string> items;
 		while (lineStream >> item) {
 			items.push_back(item);
 		}
-	
-		// Process the five items with the following format
-		// <SYMBOL> <BID_PRICE> <ASK_PRICE> <BID_SIZE> <ASK_SIZE>
+
 		if (items.size() != 5) {
 			std::cerr << "Invalid data format\n";
 			return;
 		}
 
+		// Process each line of input data with the following format:
+		// <SYMBOL> <BID_PRICE> <ASK_PRICE> <BID_SIZE> <ASK_SIZE>
 		std::string symbol = items[0];
-		std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::toupper);
+		std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::toupper); // Convert symbol to uppercase
 
-		double bid_price = std::stod(items[1]);
-		double ask_price = std::stod(items[2]);
-		int bid_size = std::stoi(items[3]);
-		int ask_size = std::stoi(items[4]);
-
-		// Check if the symbol matches the filter symbol
-		if (isCaseInsensitiveMatch(symbol, filter_symbol)) {
-			// Check if the symbol already exists in the market data map
-			if (marketDataMap.count(symbol) > 0) {
-				// Symbol already exists, update the market data
-				MarketData& existingData = marketDataMap[symbol];
+		const double bid_price = std::stod(items[1]);
+		const double ask_price = std::stod(items[2]);
+		const int bid_size = std::stoi(items[3]);
+		const int ask_size = std::stoi(items[4]);
+		// Update the market data map with the latest data
+		// Check if the symbol already exists in the market data map
+		if (marketDataMap.count(symbol) > 0) {
+			// Symbol already exists, update the market data
+			MarketData& existingData = marketDataMap[symbol];
+			// Update if highest bid and lowest ask prices found for symbol (use corresponding bid/ask sizes as well)
+			if (bid_price > existingData.getBidPrice()) {
 				existingData.setBidPrice(bid_price);
-				existingData.setAskPrice(ask_price);
 				existingData.setBidSize(bid_size);
-				existingData.setAskSize(ask_size);
-			} else {
-				// Symbol does not exist, create a new market data entry
-				marketDataMap[filter_symbol] = MarketData(filter_symbol, bid_price, ask_price, bid_size, ask_size);
 			}
 
+			if (ask_price < existingData.getAskPrice()) {
+				existingData.setAskPrice(ask_price);
+				existingData.setAskSize(ask_size);
+			}
 		} else {
-			// User not filtering on this symbol, skip to next iteration
-			continue;
+			// Symbol does not exist, create a new market data entry
+			marketDataMap[symbol] = MarketData(symbol, bid_price, ask_price, bid_size, ask_size);
 		}
-	
-		// Clear the items vector for the next iteration
-		items.clear();
 	}
 
-	printMarketData(marketDataMap);
+	// Helper function to read input data from a file
+	std::string helpers::readInputDataFromFile(const std::string& filePath) {
+		std::ifstream inputFile(filePath);
+		if (!inputFile) {
+			std::cerr << "Failed to open file\n";
+			return "";
+		}
+		std::stringstream buffer;
+		buffer << inputFile.rdbuf();
+		return buffer.str();
+	}
+	
+}
+
+
+void MarketData::on_market_data(char const *data){
+	// Create a map to store the market data
+	std::map<std::string, MarketData> marketDataMap;
+
+	std::istringstream iss(data); // Declare and initialize the 'iss' variable
+	std::string line;
+
+	// Process each line of input data and update the market data map
+	while (std::getline(iss, line, '\n')) {
+		helpers::processLine(line, marketDataMap);
+	}
+
+	// Print the market data
+	helpers::printMarketData(marketDataMap);
 }
 
 int main(int argc, char** argv) {
-	// Ask user for symbol to filter on
-	std::string symbol;
-	std::cout << "Enter symbol: ";
-	std::cin >> symbol;
 
 	int choice;
 	std::cout << "Choose an option:\n";
 	std::cout << "1. Input file path\n";
-	std::cout << "2. Input string with this format for each line: SYMBOL BID_PRICE ASK_PRICE BID_SIZE ASK_SIZE\\n";
+	std::cout << "2. Input string with this format for each line: SYMBOL BID_PRICE ASK_PRICE BID_SIZE ASK_SIZE\\n \n";
 	std::cout << "Enter your choice: ";
 	std::cin >> choice;
 
@@ -150,19 +118,29 @@ int main(int argc, char** argv) {
 			std::cout << "Enter file path: ";
 			std::cin >> filePath;
 
-			std::string inputData = readInputDataFromFile(filePath);
-			processInputData(symbol, inputData);
+			std::string inputData = helpers::readInputDataFromFile(filePath);
+			helpers::processInputData(inputData);
 
 			break;
 		}
 		case 2: {
 			// Read input data from the user
-			std::string inputString;
-			std::cout << "Enter input string: ";
-			std::cin.ignore(); // Ignore the newline character left in the input stream
-			std::getline(std::cin, inputString);
+			std::string input;
+			std::string line;
 
-			processInputData(symbol, inputString);
+			std::cout << "Enter the input string (end with an empty line):\n";
+
+			std::cin.ignore(); // Ignore the newline character in the input buffer
+			
+			// Read input line by line and keep newlines
+			while (std::getline(std::cin, line)) {
+				if (line.empty()) { // End input when an empty line is entered
+					break;
+				}
+				input += line + "\n";
+			}			
+
+			helpers::processInputData(input.c_str());
 
 			break;
 		}

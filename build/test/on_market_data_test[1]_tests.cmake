@@ -1,0 +1,7 @@
+add_test([=[OnMarketDataTest.HelloTest]=]  /Users/axel/Development/Boerberl/build/test/on_market_data_test [==[--gtest_filter=OnMarketDataTest.HelloTest]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[OnMarketDataTest.HelloTest]=]  PROPERTIES WORKING_DIRECTORY /Users/axel/Development/Boerberl/build/test SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[OnMarketDataTest.HelloSTest]=]  /Users/axel/Development/Boerberl/build/test/on_market_data_test [==[--gtest_filter=OnMarketDataTest.HelloSTest]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[OnMarketDataTest.HelloSTest]=]  PROPERTIES WORKING_DIRECTORY /Users/axel/Development/Boerberl/build/test SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[OnMarketDataTest.ReadUserInputTest]=]  /Users/axel/Development/Boerberl/build/test/on_market_data_test [==[--gtest_filter=OnMarketDataTest.ReadUserInputTest]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[OnMarketDataTest.ReadUserInputTest]=]  PROPERTIES WORKING_DIRECTORY /Users/axel/Development/Boerberl/build/test SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  on_market_data_test_TESTS OnMarketDataTest.HelloTest OnMarketDataTest.HelloSTest OnMarketDataTest.ReadUserInputTest)

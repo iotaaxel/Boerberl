@@ -81,6 +81,7 @@ The function will receive a stream of strings with the following format:
   7. Consider displaying the spread as a percent.
   8. Consider adding the volume data.
   9. Consider adding the last trade price.
+  10. Add the walkthrough slides
 
 ## References
 * [Quickstart: Building with CMake](https://google.github.io/googletest/quickstart-cmake.html)
